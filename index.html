@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>KN0X-FIT Interactive Diet Plan</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"></noscript>
+    
+    <style>
+        :root {
+            --knox-red: #dc2626;
+            --knox-dark: #09090b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; 
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior-y: none;
+            scroll-behavior: smooth;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.90);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            scroll-snap-type: x mandatory;
+        }
+        
+        .glass-nav > button {
+            scroll-snap-align: center;
+        }
+
+        .nav-link { transition: all 0.2s ease-in-out; }
+        .nav-link.active {
+            background: var(--knox-dark);
+            color: white;
+            font-weight: 700;
+        }
+        .nav-link:not(.active):hover {
+            background-color: #e5e7eb; 
+            color: var(--knox-red);
+        }
+
+        .mobile-tab { transition: all 0.2s ease; position: relative; }
+        .mobile-tab.active {
+            color: white;
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            border-radius: 9999px;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.2);
+        }
+
+        .content-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        aside::-webkit-scrollbar { width: 4px; }
+        aside::-webkit-scrollbar-track { background: transparent; }
+        aside::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+        aside::-webkit-scrollbar-thumb:hover { background: var(--knox-red); }
+    </style>
+</head>
+<body class="text-zinc-800 antialiased pb-safe selection:bg-red-200 selection:text-red-900">
+
+    <!-- Mobile Header & Nav (Sticky) -->
+    <div class="lg:hidden sticky top-0 z-50 shadow-sm">
+        <div id="mobile-header-bar" class="glass-header px-4 py-3 flex justify-between items-center">
+            <button id="mobile-menu-toggle" class="text-zinc-900 text-2xl active:scale-95 transition-transform p-2 rounded-xl hover:bg-zinc-100">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a href="https://kn0x.fit/" target="_blank" class="flex items-center absolute left-1/2 transform -translate-x-1/2">
+                <img src="./src/assets/final_logo-removebg-preview (1).png" alt="KN0X-FIT Logo" class="h-10 w-auto" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="hidden text-xl font-black text-zinc-900 italic tracking-tighter uppercase"><span class="text-red-600">KN0X</span>-FIT</div>
+            </a>
+            <div class="w-10"></div> 
+        </div>
+
+        <div class="glass-nav overflow-x-auto no-scrollbar flex items-center px-3 py-3 gap-2 border-b border-zinc-200">
+            <button data-view="dashboard" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Dashboard</button>
+            <button data-view="week1" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Week 1</button>
+            <button data-view="week2" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Week 2</button>
+            <button data-view="week3" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Week 3</button>
+            <button data-view="week4" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Week 4</button>
+            <button data-view="keyNotes" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Rules</button>
+            <button data-view="explore" class="mobile-tab flex-shrink-0 px-5 py-2 text-sm font-bold text-zinc-500 whitespace-nowrap hover:bg-zinc-100 rounded-full">Upgrades</button>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div id="mobile-overlay" class="lg:hidden fixed inset-0 bg-zinc-900/60 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Layout Container -->
+    <div class="relative min-h-screen lg:flex">
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="bg-white w-72 shadow-xl fixed top-0 left-0 h-full z-50 transform -translate-x-full transition-transform duration-300 lg:translate-x-0 lg:relative lg:flex-shrink-0 border-r border-zinc-200 overflow-y-auto flex flex-col">
+            <div class="py-8 flex items-center justify-center border-b border-zinc-100 bg-white sticky top-0 z-10">
+                <a href="https://kn0x.fit/" target="_blank" class="contents">
+                    <img src="./src/assets/final_logo-removebg-preview (1).png" alt="KN0X-FIT Logo" class="h-20 md:h-24 w-auto">
+                </a>
+                <button id="sidebar-close" class="lg:hidden absolute top-4 right-4 text-zinc-400 hover:text-red-600 p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-5 flex-1">
+                <nav id="navigation" class="space-y-1.5">
+                    <p class="px-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-3 mt-2">Overview</p>
+                    <a href="#" data-view="dashboard" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-chart-pie w-6 text-center text-lg"></i> Dashboard
+                    </a>
+                    
+                    <p class="px-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest mt-8 mb-3">Mass Phase Plan</p>
+                    <a href="#" data-view="week1" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-calendar-day w-6 text-center text-lg"></i> Week 1: Base
+                    </a>
+                    <a href="#" data-view="week2" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-calendar-week w-6 text-center text-lg"></i> Week 2: Volume
+                    </a>
+                    <a href="#" data-view="week3" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-calendar-check w-6 text-center text-lg"></i> Week 3: Gains
+                    </a>
+                    <a href="#" data-view="week4" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-fire w-6 text-center text-lg"></i> Week 4: Peak
+                    </a>
+                    
+                    <p class="px-4 text-[10px] font-black text-zinc-400 uppercase tracking-widest mt-8 mb-3">Resources</p>
+                    <a href="#" data-view="keyNotes" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-bolt w-6 text-center text-lg"></i> Critical Rules
+                    </a>
+                    <a href="#" data-view="explore" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-rocket w-6 text-center text-lg"></i> Upgrades
+                    </a>
+                    <a href="#" data-view="terms" class="nav-link flex items-center gap-4 px-4 py-3 rounded-xl text-zinc-600 font-semibold">
+                        <i class="fa-solid fa-file-contract w-6 text-center text-lg"></i> Terms
+                    </a>
+                </nav>
+            </div>
+            <div class="p-6 text-center text-xs text-zinc-400 border-t border-zinc-100 bg-zinc-50">
+                <p class="font-black text-zinc-800 uppercase tracking-widest mb-1 text-[10px]">Engineered For Mass</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-1 p-4 sm:p-8 overflow-y-auto min-h-[calc(100vh-120px)] pb-28 lg:pb-12 max-w-5xl mx-auto w-full">
+            <!-- Content injected here -->
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+
+    <script>
+        const dietPlanData = {
+            client: {
+                name: "Venki",
+                goal: "Muscle Gain",
+                age: 30,
+                gender: "Male",
+                currentWeight: "71 kg",
+                height: "183 cm (6'0\")",
+                bmr: 1700,
+                bmi: 21.2,
+                tdee: 2950,
+                calorieTarget: 3300,
+                dietaryPreference: "Non-Veg (Budget: ₹100/day)",
+                activityLevel: "Highly Active (On-site + Workouts)",
+                experience: "Beginner (0-6 months)",
+                estBodyFat: 15,
+                ffmi: 18.0
+            },
+            weeks: {
+                week1: {
+                    title: "Week 1: The Mass Foundation",
+                    subtitle: "Target: ~160g Protein",
+                    focus: "Idli for Tiffin. Yellow Rice for Lunch & Dinner. Do not skip the Soya and Eggs—they are your primary budget muscle-builders.",
+                    meals: [
+                        {
+                            time: "Breakfast",
+                            icon: "fa-solid fa-mug-saucer",
+                            items: [
+                                { name: "Idli", quantity: "4 Large (200g)", link: "Soft Idli Batter Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Roasted Peanuts", quantity: "30g", link: "How to Roast Peanuts at Home" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tsp (5g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "45g", c: "62g", f: "39g", fiber: "9g", kcal: "779" },
+                            micros: "Probiotics, Iron, B12, Magnesium",
+                            swap: {
+                                items: [
+                                    { name: "Ragi Dosa", quantity: "3 pcs (210g)", link: "Ragi Dosa Recipe" },
+                                    { name: "Eggs (Omelet)", quantity: "3 Eggs (150g)", link: "Egg Omelet Recipe" },
+                                    { name: "Coconut Chutney", quantity: "1 tbsp (15g)", link: "Coconut Chutney Recipe" },
+                                    { name: "Cooking Oil", quantity: "0.5 tbsp (7g)", link: "Coconut Oil Benefits" }
+                                ],
+                                macros: { p: "28g", c: "62g", f: "39g", fiber: "9g", kcal: "711" }
+                            }
+                        },
+                        {
+                            time: "Lunch",
+                            icon: "fa-solid fa-sun",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3.5 cups cooked (500g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Soya Chunks Curry", quantity: "1.5 cups (100g raw soya)", link: "High Protein Soya Chunks Curry Recipe" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "71g", c: "188g", f: "18g", fiber: "25g", kcal: "1198" },
+                            micros: "Massive Protein Dose, Calcium, Fiber, Vitamin C",
+                            swap: {
+                                items: [
+                                    { name: "Lemon Rice", quantity: "2 cups (360g)", link: "Lemon Rice Recipe" },
+                                    { name: "Soya Chunks Curry", quantity: "1.2 cups (240g)", link: "Soya Chunks Curry Recipe" },
+                                    { name: "Veg Palya", quantity: "1 cup (150g)", link: "Veg Palya Recipe" },
+                                    { name: "Egg Whites", quantity: "2 (66g)", link: "Boiled Egg Whites" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "49g", c: "120g", f: "27g", fiber: "18g", kcal: "919" }
+                            }
+                        },
+                        {
+                            time: "Site-Friendly Snack",
+                            icon: "fa-solid fa-person-digging",
+                            items: [
+                                { name: "Roasted Peanuts", quantity: "40g", link: "Healthy Masala Peanuts Recipe" },
+                                { name: "Bananas", quantity: "2 medium (200g)", link: "Banana Nutrition Facts" }
+                            ],
+                            macros: { p: "12g", c: "60g", f: "21g", fiber: "8g", kcal: "477" },
+                            micros: "Potassium, Magnesium, Instant Site Energy",
+                            swap: {
+                                items: [
+                                    { name: "Sweet Potato (Boiled)", quantity: "1 cup (150g)", link: "Boiled Sweet Potato" },
+                                    { name: "Egg Whites", quantity: "3 (99g)", link: "Boiled Egg Whites" },
+                                    { name: "Peanuts", quantity: "15g", link: "Roasted Peanuts" }
+                                ],
+                                macros: { p: "17g", c: "30g", f: "8g", fiber: "6g", kcal: "260" }
+                            }
+                        },
+                        {
+                            time: "Dinner",
+                            icon: "fa-solid fa-moon",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "2.5 cups cooked (350g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Healthy Egg Recipes" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "39g", c: "117g", f: "33g", fiber: "10g", kcal: "921" },
+                            micros: "Iron, Folate, Healthy Fats for Recovery",
+                            swap: {
+                                items: [
+                                    { name: "Chapati", quantity: "3 pcs (120g)", link: "Soft Chapati Recipe" },
+                                    { name: "Chicken Kheema", quantity: "1.2 cups (240g)", link: "Chicken Kheema Recipe" },
+                                    { name: "Salad", quantity: "1 bowl (100g)", link: "Green Salad Recipe" },
+                                    { name: "Cooking Oil", quantity: "0.5 tbsp (7g)", link: "Coconut Oil Benefits" }
+                                ],
+                                macros: { p: "41g", c: "64g", f: "33g", fiber: "12g", kcal: "717" }
+                            }
+                        },
+                        { 
+                            time: "Daily Total Achieved", 
+                            icon: "fa-solid fa-flag-checkered",
+                            item: "Daily Average", 
+                            macros: { p: "167g", c: "427g", f: "111g", fiber: "52g", kcal: "3375" },
+                            micros: "Perfect mathematical calorie surplus hit on a budget. Eggs and Soya are doing the heavy lifting.", 
+                            isTotal: true
+                        }
+                    ]
+                },
+                week2: {
+                    title: "Week 2: Volume & Strength",
+                    subtitle: "Target: ~165g Protein",
+                    focus: "Chapati for morning tiffin. Keeping the high-calorie Yellow Rice for Lunch & Dinner.",
+                    meals: [
+                        {
+                            time: "Breakfast",
+                            icon: "fa-solid fa-mug-saucer",
+                            items: [
+                                { name: "Chapati", quantity: "3 pcs (120g)", link: "Soft Chapati Dough Recipe" },
+                                { name: "Egg Bhurji", quantity: "4 whole eggs + onions", link: "Street Style Egg Bhurji Recipe" },
+                                { name: "Milk Tea / Coffee", quantity: "1 cup", link: "Indian Milk Tea Recipe" },
+                                { name: "Cooking Oil/Ghee", quantity: "2 tsp (10g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "36g", c: "64g", f: "31g", fiber: "9g", kcal: "679" },
+                            micros: "Complex Carbs, Complete Protein, Choline",
+                            swap: {
+                                items: [
+                                    { name: "Uppittu", quantity: "1.5 cups (270g)", link: "Uppittu Recipe" },
+                                    { name: "Eggs", quantity: "3 (150g)", link: "Boiled Eggs Recipe" },
+                                    { name: "Egg Whites", quantity: "2 (66g)", link: "Boiled Egg Whites" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "34g", c: "61g", f: "27g", fiber: "4g", kcal: "623" }
+                            }
+                        },
+                        {
+                            time: "Lunch",
+                            icon: "fa-solid fa-sun",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3.5 cups cooked (500g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1.5 Cups (330g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Soya Chunks Curry", quantity: "1.5 cups (100g raw soya)", link: "High Protein Soya Chunks Curry Recipe" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "73g", c: "195g", f: "19g", fiber: "25g", kcal: "1243" },
+                            micros: "Iron, Calcium, High Dietary Fiber",
+                            swap: {
+                                items: [
+                                    { name: "Soya Pulao", quantity: "2 cups (400g)", link: "Soya Pulao Recipe" },
+                                    { name: "Boiled Eggs", quantity: "2 (100g)", link: "Boiled Eggs Recipe" },
+                                    { name: "Salad", quantity: "1 bowl (100g)", link: "Green Salad Recipe" },
+                                    { name: "Dal/Sambar", quantity: "1 cup (220g)", link: "Sambar Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "43g", c: "91g", f: "29g", fiber: "21g", kcal: "797" }
+                            }
+                        },
+                        {
+                            time: "Site-Friendly Snack",
+                            icon: "fa-solid fa-person-digging",
+                            items: [
+                                { name: "Bananas", quantity: "2 Medium (200g)", link: "Banana Nutrition Facts" },
+                                { name: "Roasted Peanuts", quantity: "40g", link: "How to Roast Peanuts at Home" }
+                            ],
+                            macros: { p: "12g", c: "60g", f: "21g", fiber: "8g", kcal: "477" },
+                            micros: "Instant Energy, B-Vitamins",
+                            swap: {
+                                items: [
+                                    { name: "Roasted Chana", quantity: "40g", link: "Roasted Chana Benefits" },
+                                    { name: "Banana", quantity: "1 medium (100g)", link: "Banana Nutrition Facts" },
+                                    { name: "Egg Whites", quantity: "2 (66g)", link: "Boiled Egg Whites" }
+                                ],
+                                macros: { p: "16g", c: "51g", f: "2g", fiber: "10g", kcal: "286" }
+                            }
+                        },
+                        {
+                            time: "Dinner",
+                            icon: "fa-solid fa-moon",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3 cups cooked (450g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1.5 Cups (330g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Cooking Oil / Ghee", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "43g", c: "144g", f: "36g", fiber: "15g", kcal: "1072" },
+                            micros: "Folate, Amino Acids, Sleep-promoting Carbs",
+                            swap: {
+                                items: [
+                                    { name: "Akki Rotti", quantity: "2 pcs (120g)", link: "Karnataka Akki Roti Recipe" },
+                                    { name: "Chicken Curry", quantity: "1 cup (220g)", link: "Chicken Curry Recipe" },
+                                    { name: "Veg Palya", quantity: "1 cup (150g)", link: "Veg Palya Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "36g", c: "85g", f: "27g", fiber: "8g", kcal: "727" }
+                            }
+                        },
+                        { 
+                            time: "Daily Total Achieved", 
+                            icon: "fa-solid fa-flag-checkered",
+                            item: "Daily Average", 
+                            macros: { p: "164g", c: "463g", f: "107g", fiber: "57g", kcal: "3471" },
+                            micros: "Balanced quick energy for your site work and slow-release proteins for sleep recovery.", 
+                            isTotal: true
+                        }
+                    ]
+                },
+                week3: {
+                    title: "Week 3: Heavy Gains",
+                    subtitle: "Target: ~185g Protein",
+                    focus: "Dosa for morning tiffin. Push those Soya portions slightly to feed the muscles on heavy lift days.",
+                    meals: [
+                        {
+                            time: "Breakfast",
+                            icon: "fa-solid fa-mug-saucer",
+                            items: [
+                                { name: "Dosa", quantity: "3 Medium (180g)", link: "Crispy Dosa Batter Recipe" },
+                                { name: "Peanut Chutney", quantity: "3 tbsp (45g)", link: "Peanut Chutney for Dosa Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Cooking Oil/Ghee", quantity: "1 tsp (5g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "39g", c: "70g", f: "41g", fiber: "7g", kcal: "805" },
+                            micros: "B-Vitamins, Fermented Batter, Protein Synthesis",
+                            swap: {
+                                items: [
+                                    { name: "Rice (Cooked)", quantity: "1.5 cups (240g)", link: "Perfect White Rice Recipe" },
+                                    { name: "Chicken Curry", quantity: "1 cup (220g)", link: "Chicken Curry Recipe" },
+                                    { name: "Eggs", quantity: "2 (100g)", link: "Boiled Eggs Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "43g", c: "74g", f: "23g", fiber: "2g", kcal: "675" }
+                            }
+                        },
+                        {
+                            time: "Lunch",
+                            icon: "fa-solid fa-sun",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3.5 cups cooked (500g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar (Thick)", quantity: "1.5 Cups (330g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Soya Chunks Curry", quantity: "1.5 cups (120g raw soya)", link: "High Protein Soya Chunks Curry Recipe" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "83g", c: "202g", f: "19g", fiber: "28g", kcal: "1311" },
+                            micros: "Massive Protein Dose, Iron, Carbs for Glycogen",
+                            swap: {
+                                items: [
+                                    { name: "Ragi Mudde", quantity: "1.5 balls (375g)", link: "Ragi Mudde Recipe" },
+                                    { name: "Dal/Sambar", quantity: "1.5 cups (330g)", link: "Sambar Recipe" },
+                                    { name: "Chicken Sukka/Dry", quantity: "100g", link: "Chicken Sukka Recipe" },
+                                    { name: "Veg Palya", quantity: "1 cup (150g)", link: "Veg Palya Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "46g", c: "102g", f: "21g", fiber: "24g", kcal: "781" }
+                            }
+                        },
+                        {
+                            time: "Site-Friendly Snack",
+                            icon: "fa-solid fa-person-digging",
+                            items: [
+                                { name: "Boiled Eggs", quantity: "2 whole eggs", link: "Healthy Egg Recipes" },
+                                { name: "Roasted Peanuts", quantity: "40g", link: "How to Roast Peanuts at Home" }
+                            ],
+                            macros: { p: "22g", c: "7g", f: "30g", fiber: "6g", kcal: "386" },
+                            micros: "Iron, Plant Protein, Amino Acids",
+                            swap: {
+                                items: [
+                                    { name: "Sundal (Black Chana)", quantity: "1 cup (150g)", link: "Sundal Recipe" },
+                                    { name: "Egg Whites", quantity: "3 (99g)", link: "Boiled Egg Whites" },
+                                    { name: "Peanuts", quantity: "20g", link: "Roasted Peanuts" }
+                                ],
+                                macros: { p: "28g", c: "29g", f: "14g", fiber: "14g", kcal: "354" }
+                            }
+                        },
+                        {
+                            time: "Dinner",
+                            icon: "fa-solid fa-moon",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3 cups cooked (450g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1.5 Cups (330g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Cooking Oil / Ghee", quantity: "1 tbsp (15g)", link: "Ghee Benefits in Diet" }
+                            ],
+                            macros: { p: "43g", c: "144g", f: "43g", fiber: "15g", kcal: "1135" },
+                            micros: "Fiber, Satiety, Omega-3s",
+                            swap: {
+                                items: [
+                                    { name: "Chapati", quantity: "3 pcs (120g)", link: "Soft Chapati Recipe" },
+                                    { name: "Soya Chunks Curry", quantity: "1.2 cups (240g)", link: "Soya Chunks Curry Recipe" },
+                                    { name: "Salad", quantity: "1 bowl (100g)", link: "Green Salad Recipe" },
+                                    { name: "Cooking Oil", quantity: "0.5 tbsp (7g)", link: "Coconut Oil Benefits" }
+                                ],
+                                macros: { p: "41g", c: "78g", f: "22g", fiber: "22g", kcal: "674" }
+                            }
+                        },
+                        { 
+                            time: "Daily Total Achieved", 
+                            icon: "fa-solid fa-flag-checkered",
+                            item: "Daily Average", 
+                            macros: { p: "187g", c: "423g", f: "133g", fiber: "56g", kcal: "3637" },
+                            micros: "Make sure to eat the full Soya portion at lunch. Without it, you won't hit your target.", 
+                            isTotal: true
+                        }
+                    ]
+                },
+                week4: {
+                    title: "Week 4: Peak Mass",
+                    subtitle: "Target: ~165g Protein",
+                    focus: "Akki Roti for Tiffin. Maximum food volume and calorie efficiency for the final week.",
+                    meals: [
+                        {
+                            time: "Breakfast",
+                            icon: "fa-solid fa-mug-saucer",
+                            items: [
+                                { name: "Akki Roti", quantity: "2 pcs (150g)", link: "Karnataka Akki Roti Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "5 whole eggs (250g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Cooking Oil/Ghee", quantity: "2 tsp (10g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "41g", c: "82g", f: "36g", fiber: "6g", kcal: "816" },
+                            micros: "Rice flour carbs, Vitamin D, High Protein",
+                            swap: {
+                                items: [
+                                    { name: "Paddu (Gunpangla)", quantity: "6 pcs (180g)", link: "Paddu Recipe" },
+                                    { name: "Coconut Chutney", quantity: "2 tbsp (30g)", link: "Coconut Chutney Recipe" },
+                                    { name: "Eggs", quantity: "3 (150g)", link: "Boiled Eggs Recipe" },
+                                    { name: "Cooking Oil", quantity: "0.5 tbsp (7g)", link: "Coconut Oil Benefits" }
+                                ],
+                                macros: { p: "29g", c: "64g", f: "44g", fiber: "6g", kcal: "768" }
+                            }
+                        },
+                        {
+                            time: "Lunch",
+                            icon: "fa-solid fa-sun",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "3.5 cups cooked (500g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Soya Chunks Curry", quantity: "1.5 cups (100g raw soya)", link: "High Protein Soya Chunks Curry Recipe" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "71g", c: "188g", f: "18g", fiber: "25g", kcal: "1198" },
+                            micros: "Zinc, Massive Energy for Site Work",
+                            swap: {
+                                items: [
+                                    { name: "Biryani/Pulao (Chicken)", quantity: "2.5 cups (625g)", link: "Chicken Biryani Recipe" },
+                                    { name: "Boiled Eggs", quantity: "2 (100g)", link: "Boiled Eggs Recipe" },
+                                    { name: "Salad", quantity: "1 bowl (100g)", link: "Green Salad Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "50g", c: "105g", f: "35g", fiber: "8g", kcal: "935" }
+                            }
+                        },
+                        {
+                            time: "Site-Friendly Snack",
+                            icon: "fa-solid fa-person-digging",
+                            items: [
+                                { name: "Roasted Peanuts", quantity: "50g", link: "How to Roast Peanuts at Home" },
+                                { name: "Bananas", quantity: "2 Medium (200g)", link: "Banana Nutrition Facts" }
+                            ],
+                            macros: { p: "15g", c: "62g", f: "26g", fiber: "8g", kcal: "542" },
+                            micros: "Monounsaturated Fats, Potassium",
+                            swap: {
+                                items: [
+                                    { name: "Sprouts Salad", quantity: "1.5 cups (225g)", link: "Sprouts Salad Recipe" },
+                                    { name: "Peanuts", quantity: "30g", link: "Roasted Peanuts" },
+                                    { name: "Egg Whites", quantity: "2 (66g)", link: "Boiled Egg Whites" }
+                                ],
+                                macros: { p: "30g", c: "35g", f: "16g", fiber: "11g", kcal: "404" }
+                            }
+                        },
+                        {
+                            time: "Dinner",
+                            icon: "fa-solid fa-moon",
+                            items: [
+                                { name: "Yellow Rice (Chitranna)", quantity: "2.5 cups cooked (350g)", link: "Karnataka Style Chitranna Lemon Rice Recipe" },
+                                { name: "Sambar", quantity: "1 Cup (220g)", link: "Karnataka Style Sambar Recipe" },
+                                { name: "Boiled Eggs", quantity: "4 whole eggs (200g)", link: "Perfect Boiled Eggs Recipe" },
+                                { name: "Cooking Oil (Total)", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                            ],
+                            macros: { p: "39g", c: "117g", f: "33g", fiber: "10g", kcal: "921" },
+                            micros: "Complex Carbs, Recovery Fats",
+                            swap: {
+                                items: [
+                                    { name: "Jolada Rotti", quantity: "3 pcs (120g)", link: "Jolada Rotti Recipe" },
+                                    { name: "Chicken Sukka/Dry", quantity: "120g", link: "Chicken Sukka Recipe" },
+                                    { name: "Dal/Sambar", quantity: "1 cup (220g)", link: "Sambar Recipe" },
+                                    { name: "Salad", quantity: "1 bowl (100g)", link: "Green Salad Recipe" },
+                                    { name: "Cooking Oil", quantity: "1 tbsp (15g)", link: "Healthy Cooking Oils" }
+                                ],
+                                macros: { p: "49g", c: "88g", f: "16g", fiber: "21g", kcal: "692" }
+                            }
+                        },
+                        { 
+                            time: "Daily Total Achieved", 
+                            icon: "fa-solid fa-flag-checkered",
+                            item: "Daily Average", 
+                            macros: { p: "166g", c: "449g", f: "113g", fiber: "49g", kcal: "3477" },
+                            micros: "Epic final week for muscle gain. We've hit absolute peak calories without breaking the ₹100/day bank.", 
+                            isTotal: true
+                        }
+                    ]
+                }
+            }
+        };
+
+        const bmiData = [
+            { label: 'Underweight', range: '< 18.5', color: 'bg-blue-400', risk: 'Deficient. Needs mass.' },
+            { label: 'Normal', range: '18.5 - 24.9', color: 'bg-emerald-500', risk: 'Venki is here (21.2) - Prime.' },
+            { label: 'Overweight', range: '25.0 - 29.9', color: 'bg-amber-400', risk: 'Increased risk.' },
+            { label: 'Obese', range: '30.0+', color: 'bg-red-600', risk: 'High risk.' }
+        ];
+
+        const mainContent = document.getElementById('main-content');
+        const navigation = document.getElementById('navigation');
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const overlay = document.getElementById('mobile-overlay');
+        const mobileNavStrip = document.querySelector('.overflow-x-auto');
+
+        let macroChart = null;
+
+        function renderDashboard() {
+            const { client } = dietPlanData;
+            
+            mainContent.innerHTML = `
+                <div class="content-fade-in w-full">
+                    <!-- Vibrant Hero Banner -->
+                    <div class="bg-zinc-900 rounded-3xl p-8 md:p-10 mb-8 text-white shadow-xl relative overflow-hidden">
+                        <div class="absolute -top-20 -right-20 w-64 h-64 bg-red-600 rounded-full blur-[100px] opacity-40"></div>
+                        <div class="relative z-10">
+                            <p class="text-xs font-black text-red-500 uppercase tracking-[0.2em] mb-2 flex items-center"><i class="fa-solid fa-bolt mr-2"></i> Built For Change</p>
+                            <h2 class="text-3xl md:text-5xl font-black tracking-tight leading-tight mb-4">Welcome to <span class="text-white italic">KN0X-FIT</span></h2>
+                            <p class="text-zinc-300 text-base md:text-lg">Hello <span class="font-bold text-white">${client.name}</span>. Your personalized <strong class="text-red-400 uppercase text-xs tracking-wider border-b border-red-500/50 pb-0.5">${client.goal}</strong> blueprint is ready.</p>
+                        </div>
+                    </div>
+
+                    <!-- Colored Metrics Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-8">
+                        <div class="bg-gradient-to-br from-blue-50 to-white p-5 rounded-2xl shadow-sm border border-blue-100 flex items-center gap-4">
+                            <div class="bg-blue-100 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-blue-600"><i class="fa-solid fa-weight-scale text-xl"></i></div>
+                            <div>
+                                <p class="text-[10px] text-blue-500 uppercase font-black tracking-widest mb-0.5">Current BMI</p>
+                                <p class="text-2xl font-black text-zinc-900 leading-none tracking-tight">${client.bmi}</p>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-50 to-white p-5 rounded-2xl shadow-sm border border-orange-100 flex items-center gap-4">
+                            <div class="bg-orange-100 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-orange-500"><i class="fa-solid fa-fire text-xl"></i></div>
+                            <div>
+                                <p class="text-[10px] text-orange-500 uppercase font-black tracking-widest mb-0.5">BMR Rate</p>
+                                <p class="text-2xl font-black text-zinc-900 leading-none tracking-tight">${client.bmr}</p>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-emerald-50 to-white p-5 rounded-2xl shadow-sm border border-emerald-100 flex items-center gap-4">
+                            <div class="bg-emerald-100 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 text-emerald-600"><i class="fa-solid fa-bolt text-xl"></i></div>
+                            <div>
+                                <p class="text-[10px] text-emerald-600 uppercase font-black tracking-widest mb-0.5">TDEE</p>
+                                <p class="text-2xl font-black text-zinc-900 leading-none tracking-tight">${client.tdee}</p>
+                            </div>
+                        </div>
+                        <div class="bg-gradient-to-br from-red-600 to-red-700 p-5 rounded-2xl shadow-md border border-red-800 flex items-center gap-4 text-white">
+                            <div class="bg-white/20 w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 backdrop-blur-sm"><i class="fa-solid fa-bullseye text-xl text-white"></i></div>
+                            <div>
+                                <p class="text-[10px] text-red-100 uppercase font-black tracking-widest mb-0.5">Surplus Target</p>
+                                <p class="text-2xl font-black text-white leading-none tracking-tight">${client.calorieTarget}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8 mb-8">
+                        <div class="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200 shadow-sm lg:col-span-2">
+                            <h3 class="text-lg font-black text-zinc-900 mb-6 uppercase tracking-wide flex items-center"><i class="fa-solid fa-user-astronaut text-red-600 mr-3 text-xl"></i> Your Profile</h3>
+                            <ul class="space-y-3.5 text-zinc-700">
+                                <li class="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+                                    <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Name</span> 
+                                    <span class="font-black text-zinc-900">${client.name} (${client.age})</span>
+                               </li>
+                               <li class="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+                                    <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Stats</span> 
+                                    <span class="font-black text-zinc-900">${client.height} • ${client.currentWeight}</span>
+                               </li>
+                               <li class="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+                                    <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Goal</span> 
+                                    <span class="font-black text-red-600">${client.goal}</span>
+                               </li>
+                               <li class="flex items-center justify-between border-b border-zinc-100 pb-2.5">
+                                    <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Exp</span> 
+                                    <span class="font-black text-zinc-900 text-right max-w-[60%] leading-tight">${client.experience}</span>
+                               </li>
+                               <li class="flex items-center justify-between pt-1">
+                                    <span class="text-xs uppercase font-bold text-zinc-400 tracking-wider">Activity</span> 
+                                    <span class="font-black text-zinc-900 text-right max-w-[60%] leading-tight">${client.activityLevel}</span>
+                               </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200 shadow-sm lg:col-span-3 flex flex-col justify-center">
+                            <div class="flex justify-between items-center mb-6">
+                                <h3 class="text-lg font-black text-zinc-900 uppercase tracking-wide flex items-center"><i class="fa-solid fa-chart-pie text-red-600 mr-3 text-xl"></i> Daily Macros</h3>
+                            </div>
+                            <div id="chart-skeleton" class="chart-container h-64 max-h-64 w-full flex flex-col items-center justify-center space-y-3 p-4 bg-zinc-50 rounded-2xl animate-pulse border border-zinc-100">
+                                <div class="w-1/2 h-3 bg-zinc-200 rounded-full"></div>
+                                <div class="w-48 h-48 bg-zinc-200 rounded-full"></div>
+                            </div>
+                            <div id="chart-wrapper" class="chart-container h-72 max-h-72 w-full hidden relative">
+                                <canvas id="macroChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Composition Analysis -->
+                    <div class="bg-white p-6 md:p-8 rounded-3xl border border-zinc-200 shadow-sm mb-8">
+                        <div class="mb-6 flex items-center justify-between border-b border-zinc-100 pb-4">
+                            <h3 class="text-lg font-black text-zinc-900 uppercase tracking-wide flex items-center"><i class="fa-solid fa-layer-group text-blue-600 mr-3 text-xl"></i> Body Composition</h3>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                            <!-- BMI Section -->
+                            <div class="bg-gradient-to-br from-zinc-50 to-white rounded-2xl p-6 border border-zinc-100 relative overflow-hidden shadow-sm">
+                                <div class="absolute top-0 left-0 w-1.5 h-full bg-emerald-500"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-black text-zinc-800 uppercase tracking-widest text-[11px]">BMI Report</h4>
+                                    <span class="bg-emerald-100 text-emerald-700 text-[9px] font-black px-2 py-1 rounded tracking-widest uppercase">Normal</span>
+                                </div>
+                                <p class="text-3xl font-black text-zinc-900 tracking-tight mb-2">${client.bmi} <span class="text-[10px] text-zinc-400 font-bold uppercase tracking-widest ml-1">kg/m²</span></p>
+                                <p class="text-[11px] text-zinc-500 mb-6 font-medium leading-relaxed">Your BMI indicates a healthy body weight. For someone 6'0", 71kg is the perfect blank canvas to start building lean muscle without needing to cut fat first.</p>
+                                
+                                <!-- Visual BMI Tracker -->
+                                <div>
+                                    <div class="flex justify-between text-[8px] font-black uppercase tracking-widest text-zinc-400 mb-1.5 px-1">
+                                        <span>Under</span>
+                                        <span class="text-emerald-600">Normal</span>
+                                        <span>Over</span>
+                                        <span>Obese</span>
+                                    </div>
+                                    <div class="h-2.5 w-full rounded-full flex overflow-hidden border border-zinc-100 shadow-inner relative">
+                                        <div class="h-full bg-blue-200 w-1/4"></div>
+                                        <div class="h-full bg-emerald-400 w-1/4 border-x border-white"></div>
+                                        <div class="h-full bg-amber-300 w-1/4 border-r border-white"></div>
+                                        <div class="h-full bg-red-400 w-1/4"></div>
+                                        <!-- Dynamic Tracker Dot -->
+                                        <div class="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white border-4 border-zinc-900 rounded-full shadow-md" style="left: ${(client.bmi / 40) * 100}%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FFMI Section -->
+                            <div class="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 relative overflow-hidden text-white shadow-xl">
+                                <div class="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="font-black text-white uppercase tracking-widest text-[11px]">FFMI Profile</h4>
+                                    <span class="bg-zinc-800 text-zinc-400 text-[9px] font-black px-2 py-1 rounded tracking-widest uppercase border border-zinc-700">Est. ${client.estBodyFat}% BF</span>
+                                </div>
+                                <p class="text-3xl font-black text-white tracking-tight mb-2">${client.ffmi} <span class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest ml-1">Index</span></p>
+                                <p class="text-[11px] text-zinc-400 mb-6 font-medium leading-relaxed">Fat-Free Mass Index measures actual muscle. An 18.0 score is average, meaning you possess <strong class="text-red-400">massive genetic headroom</strong> to add natural muscle tissue.</p>
+                                
+                                <!-- Visual FFMI Tracker -->
+                                <div>
+                                    <div class="flex justify-between text-[8px] font-black uppercase tracking-widest text-zinc-500 mb-1.5 px-1">
+                                        <span>Avg (18)</span>
+                                        <span class="text-zinc-300">Good (20)</span>
+                                        <span class="text-red-400">Pro (22+)</span>
+                                    </div>
+                                    <div class="h-2.5 w-full rounded-full bg-zinc-800 overflow-hidden relative border border-zinc-700 shadow-inner">
+                                        <div class="h-full bg-gradient-to-r from-zinc-700 via-red-500 to-red-600 w-full"></div>
+                                        <!-- Dynamic Tracker Dot -->
+                                        <div class="absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white border-4 border-red-600 rounded-full shadow-md" style="left: ${(client.ffmi / 25) * 100}%;"></div>
+                                    </div>
+                                    <p class="text-[8px] text-zinc-600 font-bold tracking-widest uppercase text-right mt-2">Natural Limit: ~25</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+            initMacroChart(); 
+        }
+
+        function _createChartInstance() {
+            const proteinGrams = 160;
+            const carbsGrams = 425;
+            const fatsGrams = 110;
+
+            const proteinCalories = proteinGrams * 4;
+            const carbsCalories = carbsGrams * 4;
+            const fatsCalories = fatsGrams * 9;
+            const ctx = document.getElementById('macroChart').getContext('2d');
+            
+            if (macroChart) { macroChart.destroy(); }
+            
+            macroChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [`Protein (~${proteinGrams}g)`, `Carbs (~${carbsGrams}g)`, `Fats (~${fatsGrams}g)`],
+                    datasets: [{
+                        data: [proteinCalories, carbsCalories, fatsCalories],
+                        backgroundColor: ['#ef4444', '#3b82f6', '#f59e0b'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                        hoverOffset: 8,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    layout: { padding: 10 },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart',
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                font: { size: 12, family: "'Inter', sans-serif", weight: '800' },
+                                color: '#27272a',
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initMacroChart() {
+            const chartSkeleton = document.getElementById('chart-skeleton');
+            const chartWrapper = document.getElementById('chart-wrapper');
+            
+            if (typeof Chart !== 'undefined') {
+                _createChartInstance(); 
+                if (chartSkeleton && chartWrapper) {
+                    chartSkeleton.classList.add('hidden');
+                    chartWrapper.classList.remove('hidden');
+                }
+            } else {
+                if (chartSkeleton) { chartSkeleton.classList.remove('hidden'); }
+                setTimeout(initMacroChart, 50);
+            }
+        }
+
+        function renderWeek(weekKey) {
+            const weekData = dietPlanData.weeks[weekKey];
+            const phaseTitle = weekData.title.split(':')[0];
+            const mainTitle = weekData.title.split(':')[1] || weekData.title;
+
+            mainContent.innerHTML = `
+                <div class="content-fade-in w-full max-w-3xl mx-auto">
+                    
+                    <div class="mb-8">
+                        <p class="text-xs font-black text-red-600 uppercase tracking-widest mb-1 flex items-center"><i class="fa-solid fa-dumbbell mr-2"></i> ${phaseTitle}</p>
+                        <h2 class="text-3xl md:text-4xl font-black text-zinc-900 tracking-tight leading-tight mb-3">${mainTitle}</h2>
+                        <p class="text-zinc-600 text-sm md:text-base font-medium leading-relaxed bg-white p-4 rounded-xl shadow-sm border border-zinc-200 border-l-4 border-l-zinc-900">${weekData.focus}</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        ${weekData.meals.map(meal => {
+                            if (meal.isTotal) {
+                                return `
+                                    <div class="bg-zinc-900 rounded-3xl shadow-xl border border-zinc-800 text-white mt-8 mb-8 overflow-hidden relative">
+                                        <div class="absolute top-0 left-0 w-1.5 h-full bg-red-600"></div>
+                                        <div class="px-6 py-5 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center">
+                                            <h3 class="font-black text-white text-lg md:text-xl flex items-center uppercase tracking-wide">
+                                                <i class="${meal.icon} text-red-500 mr-3"></i> ${meal.item}
+                                            </h3>
+                                            <span class="bg-red-500/10 text-red-400 text-[9px] md:text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest border border-red-500/20">Target Hit</span>
+                                        </div>
+                                        <div class="p-6">
+                                            <div class="grid grid-cols-5 gap-2 md:gap-3 mb-5">
+                                                <div class="bg-red-500/10 border border-red-500/20 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-red-400 font-bold uppercase tracking-widest mb-1">Pro</p>
+                                                    <p class="text-red-400 font-black text-base md:text-xl">${meal.macros.p}</p>
+                                                </div>
+                                                <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-blue-400 font-bold uppercase tracking-widest mb-1">Carb</p>
+                                                    <p class="text-blue-400 font-black text-base md:text-xl">${meal.macros.c}</p>
+                                                </div>
+                                                <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-amber-400 font-bold uppercase tracking-widest mb-1">Fat</p>
+                                                    <p class="text-amber-400 font-black text-base md:text-xl">${meal.macros.f}</p>
+                                                </div>
+                                                <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-emerald-400 font-bold uppercase tracking-widest mb-1">Fib</p>
+                                                    <p class="text-emerald-400 font-black text-base md:text-xl">${meal.macros.fiber}</p>
+                                                </div>
+                                                <div class="bg-white text-zinc-900 rounded-xl p-2 md:p-3 text-center shadow-inner">
+                                                    <p class="text-[9px] text-zinc-500 font-black uppercase tracking-widest mb-1">Kcal</p>
+                                                    <p class="font-black text-lg md:text-2xl leading-none">${meal.macros.kcal}</p>
+                                                </div>
+                                            </div>
+                                            <p class="text-xs text-zinc-400 leading-relaxed font-medium">
+                                                <strong class="text-zinc-200 uppercase tracking-widest text-[10px]">Note:</strong> ${meal.micros}
+                                            </p>
+                                        </div>
+                                    </div>
+                                `;
+                            } else {
+                                let borderTheme = 'border-l-zinc-400';
+                                let headerTheme = 'bg-zinc-50';
+                                let titleTheme = 'text-zinc-800';
+                                let iconTheme = 'text-zinc-500';
+
+                                if (meal.time.includes('Breakfast')) {
+                                    borderTheme = 'border-l-orange-500'; headerTheme = 'bg-orange-50/50'; titleTheme = 'text-orange-900'; iconTheme = 'text-orange-500';
+                                } else if (meal.time.includes('Lunch')) {
+                                    borderTheme = 'border-l-red-500'; headerTheme = 'bg-red-50/50'; titleTheme = 'text-red-900'; iconTheme = 'text-red-600';
+                                } else if (meal.time.includes('Snack')) {
+                                    borderTheme = 'border-l-emerald-500'; headerTheme = 'bg-emerald-50/50'; titleTheme = 'text-emerald-900'; iconTheme = 'text-emerald-600';
+                                } else if (meal.time.includes('Dinner')) {
+                                    borderTheme = 'border-l-indigo-500'; headerTheme = 'bg-indigo-50/50'; titleTheme = 'text-indigo-900'; iconTheme = 'text-indigo-600';
+                                }
+
+                                return `
+                                    <div class="bg-white rounded-3xl shadow-sm border border-zinc-200 border-l-4 ${borderTheme} overflow-hidden">
+                                        <div class="${headerTheme} border-b border-zinc-100 px-6 py-4 flex items-center justify-between">
+                                            <h3 class="font-black ${titleTheme} text-lg flex items-center tracking-tight">
+                                                <i class="${meal.icon} ${iconTheme} mr-3"></i> ${meal.time}
+                                            </h3>
+                                        </div>
+                                        <div class="p-6">
+                                            <ul class="space-y-4 mb-6">
+                                                ${meal.items.map(item => `
+                                                    <li class="flex items-start">
+                                                        <i class="fa-solid fa-circle-check text-zinc-300 mt-1 mr-3 text-[10px] shrink-0"></i>
+                                                        <div class="flex-1">
+                                                            <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(item.link)}" target="_blank" class="font-bold text-zinc-800 hover:${iconTheme} transition-colors text-sm md:text-base">
+                                                                ${item.name} <i class="fa-solid fa-arrow-up-right-from-square text-[9px] text-zinc-400 ml-1"></i>
+                                                            </a>
+                                                            <p class="text-zinc-500 text-xs font-medium uppercase tracking-wider mt-0.5">${item.quantity}</p>
+                                                        </div>
+                                                    </li>
+                                                `).join('')}
+                                            </ul>
+                                            
+                                            <!-- Color Coded Macros Grid -->
+                                            <div class="grid grid-cols-5 gap-2 md:gap-3">
+                                                <div class="bg-red-50 border border-red-100 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-red-500 font-bold uppercase tracking-widest mb-1">Pro</p>
+                                                    <p class="text-red-700 font-black text-sm md:text-base">${meal.macros.p}</p>
+                                                </div>
+                                                <div class="bg-blue-50 border border-blue-100 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-blue-500 font-bold uppercase tracking-widest mb-1">Carb</p>
+                                                    <p class="text-blue-700 font-black text-sm md:text-base">${meal.macros.c}</p>
+                                                </div>
+                                                <div class="bg-amber-50 border border-amber-100 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-amber-600 font-bold uppercase tracking-widest mb-1">Fat</p>
+                                                    <p class="text-amber-700 font-black text-sm md:text-base">${meal.macros.f}</p>
+                                                </div>
+                                                <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-2 md:p-3 text-center">
+                                                    <p class="text-[9px] text-emerald-600 font-bold uppercase tracking-widest mb-1">Fib</p>
+                                                    <p class="text-emerald-700 font-black text-sm md:text-base">${meal.macros.fiber}</p>
+                                                </div>
+                                                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-2 md:p-3 text-center shadow-inner">
+                                                    <p class="text-[9px] text-zinc-400 font-bold uppercase tracking-widest mb-1">Kcal</p>
+                                                    <p class="text-white font-black text-sm md:text-base">${meal.macros.kcal}</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- SWAP OPTION NESTED IN CARD -->
+                                            ${meal.swap ? `
+                                            <div class="mt-6 pt-5 border-t border-dashed border-zinc-200">
+                                                <div class="flex items-center gap-2 mb-4">
+                                                    <span class="bg-zinc-100 text-zinc-600 text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-md flex items-center border border-zinc-200">
+                                                        <i class="fa-solid fa-rotate mr-2 text-zinc-400"></i> Alt Swap Option
+                                                    </span>
+                                                </div>
+                                                <ul class="space-y-3 mb-5 pl-1 border-l-2 border-zinc-100 ml-1">
+                                                    ${meal.swap.items.map(item => `
+                                                        <li class="flex items-start pl-3">
+                                                            <div class="flex-1 leading-snug">
+                                                                <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(item.link)}" target="_blank" class="text-sm font-bold text-zinc-700 hover:text-red-600 transition-colors">
+                                                                    ${item.name}
+                                                                </a>
+                                                                <span class="text-zinc-500 font-medium text-[11px] ml-1 uppercase tracking-wider block sm:inline mt-0.5 sm:mt-0">${item.quantity}</span>
+                                                            </div>
+                                                        </li>
+                                                    `).join('')}
+                                                </ul>
+                                                
+                                                <!-- Swap Macros -->
+                                                <div class="grid grid-cols-5 gap-1.5 md:gap-2">
+                                                    <div class="bg-red-50/50 border border-red-100/50 rounded-lg p-1.5 text-center">
+                                                        <p class="text-[8px] text-red-400 font-bold uppercase tracking-widest mb-0.5">Pro</p>
+                                                        <p class="text-red-600 font-bold text-xs md:text-sm">${meal.swap.macros.p}</p>
+                                                    </div>
+                                                    <div class="bg-blue-50/50 border border-blue-100/50 rounded-lg p-1.5 text-center">
+                                                        <p class="text-[8px] text-blue-400 font-bold uppercase tracking-widest mb-0.5">Carb</p>
+                                                        <p class="text-blue-600 font-bold text-xs md:text-sm">${meal.swap.macros.c}</p>
+                                                    </div>
+                                                    <div class="bg-amber-50/50 border border-amber-100/50 rounded-lg p-1.5 text-center">
+                                                        <p class="text-[8px] text-amber-500 font-bold uppercase tracking-widest mb-0.5">Fat</p>
+                                                        <p class="text-amber-600 font-bold text-xs md:text-sm">${meal.swap.macros.f}</p>
+                                                    </div>
+                                                    <div class="bg-emerald-50/50 border border-emerald-100/50 rounded-lg p-1.5 text-center">
+                                                        <p class="text-[8px] text-emerald-500 font-bold uppercase tracking-widest mb-0.5">Fib</p>
+                                                        <p class="text-emerald-600 font-bold text-xs md:text-sm">${meal.swap.macros.fiber}</p>
+                                                    </div>
+                                                    <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-1.5 text-center">
+                                                        <p class="text-[8px] text-zinc-400 font-bold uppercase tracking-widest mb-0.5">Kcal</p>
+                                                        <p class="text-white font-bold text-xs md:text-sm">${meal.swap.macros.kcal}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            ` : ''}
+
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderKeyNotes() {
+            mainContent.innerHTML = `
+                <div class="content-fade-in w-full max-w-4xl mx-auto">
+                    <div class="mb-8">
+                        <p class="text-xs font-black text-red-600 uppercase tracking-[0.2em] mb-1">Guidelines</p>
+                        <h2 class="text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-none mb-3">Critical Rules</h2>
+                    </div>
+
+                    <div class="bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-xl mb-6 text-white border border-zinc-800">
+                        <h3 class="text-xl md:text-2xl font-black mb-4 flex items-center uppercase tracking-tight">
+                            <div class="bg-white/10 p-2.5 rounded-xl mr-4 backdrop-blur-sm"><i class="fa-solid fa-scale-balanced text-yellow-400"></i></div>
+                            Cooking & Recipe Links
+                        </h3>
+                        <ul class="space-y-4 text-zinc-300 font-medium text-sm md:text-base leading-relaxed">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1.5 mr-3 shrink-0"></i>
+                                <div><strong class="text-white">Links Are Just References:</strong> The recipe links are purely for <strong class="text-yellow-400">inspiration</strong>. Do NOT blindly follow the video if they add extra butter, cream, or cashews. Stick strictly to the ingredients and oil limits listed in your plan!</div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1.5 mr-3 shrink-0"></i>
+                                <div><strong class="text-white">Measure Your Oil:</strong> The fats in your macros include cooking oil. Always measure your oil using a spoon! Do not free-pour. <span class="bg-zinc-800 px-2 py-0.5 rounded text-white text-xs">1 tbsp = 15g</span> | <span class="bg-zinc-800 px-2 py-0.5 rounded text-white text-xs">1 tsp = 5g</span></div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1.5 mr-3 shrink-0"></i>
+                                <div><strong class="text-white">Keep It Simple:</strong> You don't need to be a chef. Cook with basic Indian spices (salt, chilli, turmeric, garam masala) — they have zero calories. Avoid overcomplicating meals.</div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-500 mt-1.5 mr-3 shrink-0"></i>
+                                <div><strong class="text-white">How To Measure:</strong> Measure items like Soya Chunks <strong class="text-red-400 uppercase tracking-wider">before</strong> cooking (raw weight). Items like Rice or Lemon Rice are measured cooked/prepared, exactly as explicitly noted in the app.</div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-red-600 to-red-700 p-6 md:p-8 rounded-3xl shadow-lg border border-red-800 mb-6 text-white">
+                        <h3 class="text-xl md:text-2xl font-black mb-4 flex items-center uppercase tracking-tight">
+                            <div class="bg-white/20 p-2.5 rounded-xl mr-4 backdrop-blur-sm"><i class="fa-solid fa-wine-glass-empty text-white"></i></div>
+                            Alcohol & Smoking
+                        </h3>
+                        <p class="text-red-50 mb-4 font-medium text-sm md:text-base leading-relaxed">Alcohol ruins muscle protein synthesis and recovery. Since you consume alcohol/smoke and your goal is muscle gain, you must strictly:</p>
+                        <ul class="list-disc list-inside space-y-2 text-white font-bold pl-2 text-sm md:text-base">
+                            <li>Minimize alcohol to rare weekends. It burns calories but provides zero muscle fuel.</li>
+                            <li>Stay extremely hydrated on site to flush toxins.</li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-6">
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-zinc-200">
+                            <div class="bg-emerald-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                                <i class="fa-solid fa-coins text-emerald-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-black text-zinc-900 mb-3 uppercase tracking-wide">₹100/Day Strategy</h3>
+                            <p class="text-zinc-600 text-sm leading-relaxed">To hit 150g+ of protein and 3300+ calories on a strict budget, daily chicken is too expensive. Rely on <strong class="text-zinc-900 font-black">Eggs (₹6), Soya Chunks (₹10/50g), and Peanuts (₹15/100g)</strong>. Soya is your best asset.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-3xl shadow-sm border border-zinc-200">
+                            <div class="bg-blue-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4">
+                                <i class="fa-solid fa-dumbbell text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-lg font-black text-zinc-900 mb-3 uppercase tracking-wide">Beginner Protocol</h3>
+                            <p class="text-zinc-600 text-sm leading-relaxed">As a beginner (0-6 months), do not ego-lift. Focus purely on form and consistency during your 4-5 workouts per week. The 3,300+ calorie surplus will naturally build the muscle.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderExplore() {
+            mainContent.innerHTML = `
+                <div class="content-fade-in max-w-5xl mx-auto">
+                    <div class="mb-10 text-center">
+                        <h2 class="text-3xl md:text-4xl font-black text-zinc-900 tracking-tight leading-tight mb-4">Level Up With <span class="text-red-600 italic">KN0X-FIT</span></h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div class="bg-white p-6 rounded-3xl border border-zinc-200 text-center flex flex-col shadow-sm">
+                            <div class="bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                                <i class="fa-solid fa-utensils text-2xl text-blue-600"></i>
+                            </div>
+                            <h4 class="text-xl font-black text-zinc-900 tracking-tight">Diet & Nutrition</h4>
+                            <p class="text-[10px] text-zinc-400 mt-1 mb-3 uppercase tracking-widest font-black">Science-Based</p>
+                            <p class="text-sm text-zinc-600 mb-8 leading-relaxed">Scientifically crafted nutrition plans tailored to your metabolism and goals.</p>
+                            <a href="https://kn0x.fit/diet-guide" target="_blank" class="mt-auto w-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-bold py-3.5 px-6 rounded-xl transition-colors flex items-center justify-center">
+                                View Guide <i class="fa-solid fa-arrow-right ml-2 text-zinc-400"></i>
+                            </a>
+                        </div>
+                        
+                        <div class="bg-zinc-900 p-6 md:p-8 rounded-3xl text-center flex flex-col border border-zinc-800 shadow-xl">
+                            <div class="bg-zinc-800 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                                <i class="fa-solid fa-crown text-2xl text-yellow-500"></i>
+                            </div>
+                            <h4 class="text-2xl font-black text-white italic tracking-tight uppercase">Elite Program</h4>
+                            <p class="text-[10px] text-red-400 mt-1 mb-4 uppercase tracking-widest font-black">Total Transformation</p>
+                            <p class="text-sm text-zinc-400 mb-8 leading-relaxed">The ultimate 360° approach. Daily coaching, custom diet, and advanced training follow-ups.</p>
+                            <a href="https://kn0x.fit/elite-program" target="_blank" class="mt-auto w-full bg-red-600 hover:bg-red-700 text-white font-black py-4 px-6 rounded-xl transition-colors flex items-center justify-center">
+                                JOIN ELITE
+                            </a>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-3xl border border-zinc-200 text-center flex flex-col shadow-sm">
+                            <div class="bg-orange-50 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5">
+                                <i class="fa-solid fa-person-running text-2xl text-orange-500"></i>
+                            </div>
+                            <h4 class="text-xl font-black text-zinc-900 tracking-tight">General Fitness</h4>
+                            <p class="text-[10px] text-zinc-400 mt-1 mb-3 uppercase tracking-widest font-black">Sustainable Health</p>
+                            <p class="text-sm text-zinc-600 mb-8 leading-relaxed">A balanced, sustainable approach for those looking to stay healthy and active.</p>
+                            <a href="https://kn0x.fit/general-fitness" target="_blank" class="mt-auto w-full bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-bold py-3.5 px-6 rounded-xl transition-colors flex items-center justify-center">
+                                Start Now <i class="fa-solid fa-arrow-right ml-2 text-zinc-400"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderTerms() {
+            mainContent.innerHTML = `
+                <div class="content-fade-in max-w-4xl mx-auto">
+                    <div class="mb-8">
+                        <p class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em] mb-2 flex items-center"><i class="fa-solid fa-file-contract mr-2"></i> Legal</p>
+                        <h2 class="text-3xl md:text-5xl font-black text-zinc-900 tracking-tight leading-none mb-3">Terms & Conditions</h2>
+                    </div>
+                    
+                    <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-zinc-200 space-y-8 text-zinc-700">
+                        <div>
+                            <h3 class="text-sm font-black text-zinc-900 mb-3 flex items-center uppercase tracking-widest">
+                                <i class="fa-solid fa-box-open text-red-600 mr-3 text-lg"></i> 1. Program Inclusions
+                            </h3>
+                            <ul class="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed text-zinc-600">
+                                <li><strong class="text-zinc-800">Diet Plan:</strong> Customized weekly diet plan based on preferences & goals.</li>
+                                <li><strong class="text-zinc-800">Workout Plan:</strong> Progressive routines tailored to fitness level.</li>
+                                <li><strong class="text-zinc-800">Elite Program:</strong> Premium coaching with daily follow-up and weekly video calls.</li>
+                                <li><strong class="text-zinc-800">Bonus:</strong> 1 extra month FREE if all Elite terms are met.</li>
+                            </ul>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-zinc-100">
+                            <div>
+                                <h3 class="text-sm font-black text-zinc-900 mb-3 flex items-center uppercase tracking-widest">
+                                    <i class="fa-solid fa-calendar-check text-red-600 mr-3 text-lg"></i> 2. Duration
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed text-zinc-600">
+                                    <li>Standard plans valid for <strong class="text-zinc-800">30 days</strong>.</li>
+                                    <li>Free month applies only if daily updates are submitted.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-black text-zinc-900 mb-3 flex items-center uppercase tracking-widest">
+                                    <i class="fa-solid fa-ban text-red-600 mr-3 text-lg"></i> 5. Refund Policy
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 pl-2 text-sm leading-relaxed text-zinc-600">
+                                    <li><strong class="text-zinc-800">No Refunds</strong> after plan delivery or questionnaire submission.</li>
+                                    <li>Exceptions made only for technical errors on our side.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        mainContent.addEventListener('click', (e) => {
+            const header = e.target.closest('.collapsible-header');
+            if (header) {
+                const content = header.nextElementSibling;
+                header.classList.toggle('expanded');
+                content.classList.toggle('expanded');
+            }
+        });
+
+        function handleNavigation(e) {
+            if(e.target.tagName === 'A' && e.target.getAttribute('href') === '#') { e.preventDefault(); }
+
+            const target = e.target.closest('[data-view]');
+            if (!target) return;
+
+            const view = target.dataset.view;
+            if (view) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                if (view === 'dashboard') { renderDashboard(); } 
+                else if (view === 'explore') { renderExplore(); } 
+                else if (view === 'keyNotes') { renderKeyNotes(); } 
+                else if (view === 'terms') { renderTerms(); } 
+                else if (view.startsWith('week')) { renderWeek(view); }
+                
+                setActiveLink(view);
+                closeMobileMenu();
+                
+                const activeMobileTab = document.querySelector(`.mobile-tab[data-view="${view}"]`);
+                if(activeMobileTab && mobileNavStrip) {
+                    const scrollLeft = activeMobileTab.offsetLeft - (mobileNavStrip.clientWidth / 2) + (activeMobileTab.clientWidth / 2);
+                    mobileNavStrip.scrollTo({ left: scrollLeft, behavior: 'smooth' });
+                }
+            }
+        }
+
+        navigation.addEventListener('click', handleNavigation);
+        mobileNavStrip.addEventListener('click', handleNavigation);
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0'); 
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; 
+        });
+
+        const closeMobileMenu = () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.remove('translate-x-0'); 
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        overlay.addEventListener('click', closeMobileMenu);
+        sidebarClose.addEventListener('click', closeMobileMenu);
+
+        function setActiveLink(view) {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            const activeSidebarLink = document.querySelector(`.nav-link[data-view="${view}"]`);
+            if (activeSidebarLink) activeSidebarLink.classList.add('active');
+
+            document.querySelectorAll('.mobile-tab').forEach(tab => {
+                tab.classList.remove('active');
+                tab.classList.remove('text-white');
+                tab.classList.add('text-zinc-500');
+            });
+            const activeMobileTab = document.querySelector(`.mobile-tab[data-view="${view}"]`);
+            if (activeMobileTab) {
+                activeMobileTab.classList.add('active');
+                activeMobileTab.classList.remove('text-zinc-500');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveLink('dashboard');
+            renderDashboard();
+        });
+
+    </script>
+</body>
+</html>
